@@ -1,3 +1,5 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable arrow-body-style */
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -6,7 +8,8 @@ const LINKS = [
     {to:'/',text: 'Home'},
     {to: '/Starred', text: 'Starred'},
 ];
-const Navs = () => (
+const Navs = () => {
+    return(
         <div>
             <ul>
                 {
@@ -16,6 +19,7 @@ const Navs = () => (
             </ul>
             
         </div>
-    )
+    );
+ }    ;
 
 export default Navs;
