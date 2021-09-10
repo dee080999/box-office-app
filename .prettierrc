@@ -4,6 +4,5 @@
     "semi": true,
     "singleQuote": true,
     "arrowParens": "avoid",
-  
-    "prefer-arrow-callback": [0]
+   "prefer-arrow-callback": [0]
   }
