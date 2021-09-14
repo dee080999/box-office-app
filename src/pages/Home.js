@@ -7,11 +7,12 @@
 /* eslint-disable react/jsx-indent-props */
 /* eslint-disable react/jsx-indent */
 /* eslint-disable arrow-body-style */
-import React, {useState} from 'react'
+import React, {useState ,  useEffect} from 'react'
 import ActorGrid from '../components/actor/ActorGrid';
 import MainPageLayout from '../components/MainPageLayout';
 import ShowGrid from '../components/show/ShowGrid';
 import { apiGet } from '../misc/config';
+import { RadioInputsWrapper, SearchInput } from './Home.styled';
 
 const Home = () => {
 
@@ -19,6 +20,8 @@ const Home = () => {
     const [results, setResults]= useState(null);
     const [searchOption,setSearchOption]=useState('shows');
     const isShowsSearch = searchOption === 'shows';
+
+   
 
     const onSearch = () =>{
 
@@ -58,26 +61,32 @@ const onRadioChange= (ev) =>{
 
     return (
         <MainPageLayout>
-        <input type="text"
+        <SearchInput type="text"
         placeholder="Search for something"
          onChange={onInputChange} value={input}/> 
-         <div>
+         <RadioInputsWrapper>
+             <div>
              <label htmlFor="shows-search">
                  Shows
                 <input id="shows-search" type="radio" value="shows"
                 checked={isShowsSearch}
                  onChange={onRadioChange} /> 
                  </label>
+                </div>
 
+                <div>
                  <label htmlFor="actors-search">
                  Actors
                 <input id="actors-search" type="radio" value="people"
                  checked={!isShowsSearch}
                  onChange={onRadioChange}/> 
                  </label>
-         </div>
+                 </div>
+         </RadioInputsWrapper>
+         <SearchButtonWrapper>
         <button type="button" onClick={onSearch}>Search</button>
-        {renderResults()}
+       </SearchButtonWrapper> 
+       {renderResults()}
         </MainPageLayout>
     );
 };

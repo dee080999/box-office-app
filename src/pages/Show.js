@@ -2,97 +2,57 @@
 /* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/jsx-indent */
-import React, {useEffect, useReducer} from 'react'
-import { useParams } from 'react-router'
-import { apiGet } from '../misc/config';
+import React from 'react';
+import { useParams } from 'react-router-dom';
 import ShowMainData from '../components/show/ShowMainData';
-import Cast from '../components/show/Cast';
 import Details from '../components/show/Details';
 import Seasons from '../components/show/Seasons';
+import Cast from '../components/show/Cast';
 import { ShowPageWrapper, InfoBlock } from './Show.Styled';
-
-const reducer= (prevState,action)=> {
- switch (action.type) {
-     case 'FETCH_SUCCESS':{
-         return{ isLoading: false, show: action.show}
-     }
-         
-      case 'FETCH_FAILED': {
-          return{...prevState,isLoading: false,error: action.error}
-      }
-
- 
-     default:
-         return prevState;
- }
-}
-
-const initialState = {
-    show: null,
-    isLoading: true,
-    error: null
-}
-
+import { useShow } from '../misc/custom-hooks';
 
 const Show = () => {
+  const { id } = useParams();
+  const { show, isLoading, error } = useShow(id);
 
-    const { id } = useParams();
+  if (isLoading) {
+    return <div>Data is being loaded</div>;
+  }
 
-   const [{show, isLoading,error},dispatch] = useReducer(reducer, initialState )
+  if (error) {
+    return <div>Error occured: {error}</div>;
+  }
 
-  
-   
+  return (
+    <ShowPageWrapper>
+      <ShowMainData
+        image={show.image}
+        name={show.name}
+        rating={show.rating}
+        summary={show.summary}
+        tags={show.genres}
+      />
 
-    useEffect(() => {
+      <InfoBlock>
+        <h2>Details</h2>
+        <Details
+          status={show.status}
+          network={show.network}
+          premiered={show.premiered}
+        />
+      </InfoBlock>
 
-      let isMounted = true;
+      <InfoBlock>
+        <h2>Seasons</h2>
+        <Seasons seasons={show._embedded.seasons} />
+      </InfoBlock>
 
-      apiGet(`/shows/${id}?embed[]=seasons&embed[]=cast`).then(results => {
+      <InfoBlock>
+        <h2>Cast</h2>
+        <Cast cast={show._embedded.cast} />
+      </InfoBlock>
+    </ShowPageWrapper>
+  );
+};
 
-      
-           if(isMounted){
-               dispatch({type: 'FETCH_SUCCESS', show: results})
-           }
-        
-      
-      
-      }).catch(err => {
-          if(isMounted){
-            dispatch({type: 'FETCH_FAILED', error: err.message})
-          }
-          
-      });
-
-      return() =>{
-          isMounted = false;
-      }
-}, [id]);
-
-if(isLoading){
-    return <div>Data is being loaded</div>
-}
-
-if(error){
-    return<div>Error occurred:{error}</div>;
-}
-
-  return ( 
-  <ShowPageWrapper>
-      <ShowMainData image={show.image} name={show.name} rating={show.rating} summary={show.summary} tags={show.genres} />
-  <InfoBlock>
-          <h2>Details</h2>
-          <Details status={show.status} network={show.network} premiered={show.premiered} />
-     </InfoBlock>
-     <InfoBlock>
-              <h2>Seasons</h2>
-              <Seasons seasons={show._embedded.seasons} />
-          </InfoBlock>
-          <InfoBlock>
-              <h2>Cast</h2>
-              <Cast cast={show._embedded.cast} />
-          </InfoBlock> 
-  </ShowPageWrapper> 
-  )
-  };
-
-export default Show
+export default Show;
