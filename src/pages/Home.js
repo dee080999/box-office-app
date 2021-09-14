@@ -12,7 +12,7 @@ import ActorGrid from '../components/actor/ActorGrid';
 import MainPageLayout from '../components/MainPageLayout';
 import ShowGrid from '../components/show/ShowGrid';
 import { apiGet } from '../misc/config';
-import { RadioInputsWrapper, SearchInput } from './Home.styled';
+import { RadioInputsWrapper, SearchInput, SearchButtonWrapper } from './Home.styled';
 
 const Home = () => {
 
@@ -66,22 +66,25 @@ const onRadioChange= (ev) =>{
          onChange={onInputChange} value={input}/> 
          <RadioInputsWrapper>
              <div>
-             <label htmlFor="shows-search">
-                 Shows
-                <input id="shows-search" type="radio" value="shows"
-                checked={isShowsSearch}
-                 onChange={onRadioChange} /> 
-                 </label>
+
+
+                 <CustomRadio 
+                 label="Shows"
+                  id="shows-search"  value="shows"
+                  checked={isShowsSearch}
+                   onChange={onRadioChange}
+                 h
+                 />
                 </div>
 
                 <div>
-                 <label htmlFor="actors-search">
-                 Actors
-                <input id="actors-search" type="radio" value="people"
-                 checked={!isShowsSearch}
-                 onChange={onRadioChange}/> 
-                 </label>
-                 </div>
+                    <CustomRadio
+                    label="Actors"
+                     id="actors-search"  value="people"
+                     checked={!isShowsSearch}
+                     onChange={onRadioChange}/> 
+                
+                </div>
          </RadioInputsWrapper>
          <SearchButtonWrapper>
         <button type="button" onClick={onSearch}>Search</button>

@@ -1,3 +1,4 @@
+
 /* eslint-disable arrow-body-style */
 import React, { useState, useEffect } from 'react';
 import MainPageLayout from '../components/MainPageLayout';
@@ -34,7 +35,12 @@ const Starred = () => {
   return (
     <MainPageLayout>
       {isLoading && <div>Shows are still loading</div>}
-      {error && <div>Error occured: {error}</div>}
+      {error && (
+      <div>
+          Error occured:
+{error}
+</div>
+    )}
       {!isLoading && !shows && <div>No shows were added</div>}
       {!isLoading && !error && shows && <ShowGrid data={shows} />}
     </MainPageLayout>
